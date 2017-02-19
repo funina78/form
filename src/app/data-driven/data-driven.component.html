@@ -1,0 +1,47 @@
+<h1>Data Driven</h1>
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <div formGroupName="userData">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text"
+                   class="form-control"
+                   id="username"
+                   formControlName="username">
+        </div>
+        <div class="form-group">
+            <label for="email">E-Mail</label>
+            <input type="text"
+                   class="form-control"
+                   id="email"
+                   formControlName="email">
+            <div *ngIf="!myForm.get(['userData', 'email']).valid">Email Invalid</div>
+            <!--When try to access fromGroup data, use get function and give the path of the formGroup like: userData/email -->
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password"
+               class="form-control"
+               id="password"
+               formControlName="password">
+    </div>
+    <div class="radio" *ngFor="let g of genders">
+        <label>
+            <input type="radio"
+            formControlName="gender"
+            [value]="g">
+            {{g}}
+        </label>
+    </div>
+    <div formArrayName="hobbies">
+        <h3>Hobbies</h3>
+        <div class="form-group" *ngFor="let hobby of myForm.get('hobbies').controls; let i =index">
+            <input type="text"
+                   class="form-control" formControlName="{{i}}">
+                   <!--we need to use string interpolation here {{}}, because this is not a data binding -->
+        </div>
+    </div>
+    <button type="button" class="btn btn-default" (click)="onAddHobbie()">Add Hobby</button>
+    <button type="submit" class="btn btn-primary" [disabled]="!myForm.valid">Submit</button>
+</form>
